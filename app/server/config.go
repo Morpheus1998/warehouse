@@ -13,7 +13,8 @@ var ErrInvalidTypeForStore = errors.New("invalid type asserted for store")
 
 type Configuration struct {
 	HTTP struct {
-		Port int `envconfig:"HTTP_PORT" default:"8080"`
+		Port    int   `envconfig:"HTTP_PORT" default:"8080"`
+		Timeout int64 `envconfig:"HTTP_TIMEOUT" default:"2000"`
 	}
 	PostgresConfiguration struct {
 		Host                string `envconfig:"POSTGRES_HOST" default:"localhost"`

@@ -6,12 +6,12 @@ type CreateOrUpdateProductsRequest struct {
 
 type Product struct {
 	Name     string    `json:"name"`
-	Articles []Article `json:"contain_articles"`
+	Articles []Article `json:"contain_articles"` // nolint
 }
 
 type Article struct {
-	ArticleID string `json:"art_id"`
-	Amount    int    `json:"amount_of"`
+	ArticleID string `json:"art_id"`    // nolint
+	Amount    int    `json:"amount_of"` // nolint
 }
 
 type SellProductRequest struct {

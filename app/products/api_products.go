@@ -3,10 +3,11 @@ package products
 import (
 	"encoding/json"
 	"errors"
-	"github.com/rs/zerolog/log"
-	"github.com/warehouse/app/server/responses"
 	"net/http"
 
+	"github.com/rs/zerolog/log"
+
+	"github.com/warehouse/app/server/responses"
 	"github.com/warehouse/app/store"
 )
 

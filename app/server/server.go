@@ -8,6 +8,7 @@ import (
 	"os/signal"
 	"strconv"
 	"syscall"
+	"time"
 
 	"github.com/rs/zerolog/log"
 
@@ -43,7 +44,6 @@ func (srv *Server) setStores(pgDB interface{}) error {
 }
 
 func StartServer(cfg Configuration) error {
-
 	ctx := context.Background()
 	log.Ctx(ctx).Info().Msg("enter StartServer")
 	defer log.Ctx(ctx).Info().Msg("exit StartServer")
@@ -71,9 +71,10 @@ func StartServer(cfg Configuration) error {
 	defer cancel()
 	router := NewRouter(makeRoutes(server))
 	httpServer := &http.Server{
-		Addr:        ":" + strconv.Itoa(cfg.HTTP.Port),
-		Handler:     router,
-		BaseContext: func(_ net.Listener) context.Context { return ctx },
+		Addr:              ":" + strconv.Itoa(cfg.HTTP.Port),
+		Handler:           router,
+		BaseContext:       func(_ net.Listener) context.Context { return ctx },
+		ReadHeaderTimeout: time.Duration(cfg.HTTP.Timeout) * time.Millisecond,
 	}
 	// start httpServer listening
 	httpServerErr := make(chan error, 1)
