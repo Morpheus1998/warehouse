@@ -8,11 +8,16 @@ type GetAllProductsResponse struct {
 	Products []Product
 }
 
+type ProductArticle struct {
+	ArticleID     string
+	ArticleAmount int
+}
+
 type Product struct {
 	ProductName string
 	ProductID   string
 	Stock       int
-	ArticlesID  []string
+	Articles    []ProductArticle
 }
 
 type CreateOrUpdateProductsRequest struct {

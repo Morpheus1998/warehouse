@@ -69,7 +69,7 @@ func getProductsRoutes(srv *Server) Routes {
 		{
 			"SellProduct",
 			http.MethodDelete,
-			prefix + "/product/{productId}",
+			prefix + "/product/sell",
 			srv.ProductsHandler.SellProduct,
 		},
 		{

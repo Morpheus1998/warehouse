@@ -22,12 +22,14 @@ CREATE TABLE "article" (
     stock integer DEFAULT 0 not null,
     article_name varchar(30) not null,
     created_at timestamp default now() not null,
-    updated_at timestamp default now() not null
+    updated_at timestamp default now() not null,
+    CONSTRAINT stock_nonnegative CHECK (stock >= 0)
 );
 
 CREATE TABLE "product_article" (
     product_id uuid not null,
     article_id integer not null,
+    article_count integer not null,
     created_at timestamp default now() not null,
     updated_at timestamp default now() not null,
     CONSTRAINT unique_product_article UNIQUE (product_id,article_id),
