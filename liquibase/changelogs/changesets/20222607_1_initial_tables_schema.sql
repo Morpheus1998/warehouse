@@ -18,7 +18,7 @@ CREATE TABLE "product" (
 );
 
 CREATE TABLE "article" (
-    article_id integer PRIMARY KEY,
+    article_id varchar(10) PRIMARY KEY,
     stock integer DEFAULT 0 not null,
     article_name varchar(30) not null,
     created_at timestamp default now() not null,
@@ -28,7 +28,7 @@ CREATE TABLE "article" (
 
 CREATE TABLE "product_article" (
     product_id uuid not null,
-    article_id integer not null,
+    article_id varchar(10) not null,
     article_count integer not null,
     created_at timestamp default now() not null,
     updated_at timestamp default now() not null,
