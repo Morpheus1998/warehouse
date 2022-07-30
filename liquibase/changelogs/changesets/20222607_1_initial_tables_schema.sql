@@ -12,7 +12,6 @@ $$ LANGUAGE plpgsql;
 CREATE TABLE "product" (
     product_id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
     product_name varchar(30) not null,
-    articles_id varchar(30) ARRAY,
     created_at timestamp default now() not null,
     updated_at timestamp default now() not null
 );
@@ -29,7 +28,7 @@ CREATE TABLE "article" (
 CREATE TABLE "product_article" (
     product_id uuid not null,
     article_id varchar(10) not null,
-    article_count integer not null,
+    article_amount integer not null,
     created_at timestamp default now() not null,
     updated_at timestamp default now() not null,
     CONSTRAINT unique_product_article UNIQUE (product_id,article_id),

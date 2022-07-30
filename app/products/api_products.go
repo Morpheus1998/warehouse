@@ -19,7 +19,7 @@ func NewHandler() *Handler {
 	return &Handler{}
 }
 
-// CreateOrUpdateProducts is http api /product
+// CreateOrUpdateProducts is http api POST /products
 func (h *Handler) CreateOrUpdateProducts(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &CreateOrUpdateProductsRequest{}
@@ -47,7 +47,7 @@ func (h *Handler) CreateOrUpdateProducts(w http.ResponseWriter, r *http.Request)
 	responses.WriteCreatedResponse(ctx, w, nil)
 }
 
-// SellProduct is http api DELETE /product/sell
+// SellProduct is http api POST /products/sell
 func (h *Handler) SellProduct(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &SellProductRequest{}
@@ -84,7 +84,7 @@ func (h *Handler) SellProduct(w http.ResponseWriter, r *http.Request) {
 	responses.WriteNoContentResponse(ctx, w)
 }
 
-// GetAllProductsWithStock is http api GET /product
+// GetAllProductsWithStock is http api GET /products
 func (h *Handler) GetAllProductsWithStock(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	res, err := h.ProductsStore.GetAllProducts(ctx)

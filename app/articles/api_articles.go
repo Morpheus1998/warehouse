@@ -18,6 +18,7 @@ func NewHandler() *Handler {
 	return &Handler{}
 }
 
+// CreateOrUpdateArticles is http api POST /articles
 func (h *Handler) CreateOrUpdateArticles(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &CreateOrUpdateArticlesRequest{}

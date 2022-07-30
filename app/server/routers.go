@@ -63,19 +63,19 @@ func getProductsRoutes(srv *Server) Routes {
 		{
 			"CreateOrUpdateProducts",
 			http.MethodPost,
-			prefix + "/product",
+			prefix + "/products",
 			srv.ProductsHandler.CreateOrUpdateProducts,
 		},
 		{
 			"SellProduct",
-			http.MethodDelete,
-			prefix + "/product/sell",
+			http.MethodPost,
+			prefix + "/products/sell",
 			srv.ProductsHandler.SellProduct,
 		},
 		{
 			"GetAllProductsWithStock",
 			http.MethodGet,
-			prefix + "/product",
+			prefix + "/products",
 			srv.ProductsHandler.GetAllProductsWithStock,
 		},
 	}
@@ -86,7 +86,7 @@ func getArticlesRoutes(srv *Server) Routes {
 		{
 			"CreateOrUpdateArticles",
 			http.MethodPost,
-			prefix + "/article",
+			prefix + "/articles",
 			srv.ArticlesHandler.CreateOrUpdateArticles,
 		},
 	}

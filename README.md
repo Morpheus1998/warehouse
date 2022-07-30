@@ -25,10 +25,10 @@ By default if you use docker to run the project, docker-compose command will bri
 
 
 ## Endpoints
-1. ```POST /product``` used for populating products table.
-2. ```GET /product``` used for getting all products and quantity of availability.
-3. ```POST /product/sell``` used for selling a product.
-4. ```POST /article``` used for populating articles table.
+1. ```POST /products``` used for populating products table.
+2. ```GET /products``` used for getting all products and quantity of availability.
+3. ```POST /products/sell``` used for selling a product.
+4. ```POST /articles``` used for populating articles table.
 
 ### TODO (for future development): 
 1. Change **CreateOrUpdateArticles** and **CreateOrUpdateProducts** Endpoints so that they can handle large json files
