@@ -2,7 +2,6 @@ package tests
 
 import (
 	"context"
-	"github.com/rs/zerolog"
 	log2 "log"
 	"net/http"
 	"os"
@@ -10,6 +9,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 
 	"github.com/warehouse/app/server"

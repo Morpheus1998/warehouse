@@ -1,4 +1,3 @@
 databaseChangeLog:
-  - includeAll:
-      path: changelog/changesets/
-      errorIfMissingOrEmpty: false
+  - include:
+      file: liquibase/changelog/changesets/20222607_1_initial_tables_schema.sql

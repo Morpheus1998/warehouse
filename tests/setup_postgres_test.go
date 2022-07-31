@@ -3,7 +3,6 @@ package tests
 import (
 	"context"
 	"fmt"
-	"github.com/warehouse/app/store"
 	"os"
 	"strconv"
 	"time"
@@ -11,6 +10,8 @@ import (
 	"github.com/ory/dockertest/v3"
 	"github.com/ory/dockertest/v3/docker"
 	"github.com/rs/zerolog/log"
+
+	"github.com/warehouse/app/store"
 )
 
 var (
@@ -22,7 +23,7 @@ const (
 	dbPassword  = "password"
 	dbPort      = "5432"
 	dbName      = "warehouse"
-	credentials = "../creds.json"
+	credentials = "../creds.json" // nolint
 )
 
 func StartDB(liquidasePath string) (*dockertest.Resource, *dockertest.Pool, *docker.Network) {
@@ -114,12 +115,12 @@ func runMigrations(pool *dockertest.Pool, host string, networkID string, liquida
 	if err != nil {
 		return err
 	}
-	err = resource.Expire(60) // nolint
+	err = resource.Expire(60)
 	if err != nil {
 		return err
 	}
 
-	time.Sleep(5 * time.Second) // nolint
+	time.Sleep(5 * time.Second)
 	return nil
 }
 
@@ -153,7 +154,7 @@ func initPostgres(pool *dockertest.Pool, host string, port string, networkID str
 	if err != nil {
 		log.Fatal().Msgf("Could not start resource reason: %v", err)
 	}
-	err = resource.Expire(60) // nolint
+	err = resource.Expire(60)
 	if err != nil {
 		log.Fatal().Msgf("Could not set expire timeout to postgres: %s", err)
 	}
