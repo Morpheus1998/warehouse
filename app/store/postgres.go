@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"os"
 
-	_ "github.com/lib/pq"
+	_ "github.com/lib/pq" // this is required to sql driver
 	"github.com/rs/zerolog/log"
 )
 
