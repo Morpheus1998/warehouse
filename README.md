@@ -12,6 +12,8 @@ It also provides two other endpoints to populate database. </br>
 ### How to run:
 1. run ```make run-server```.
 2. run ```make migrate```
+3. run ```curl -X POST localhost:8080/articles -d @db_sample/inventory.json```
+4. run ```curl -X POST localhost:8080/products -d @db_sample/products.json```
 
 ### How to run tests:
 1. run ```make test``` at project directory.
