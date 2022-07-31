@@ -29,6 +29,5 @@ const (
 	getProductsWithStock = `
 	SELECT (product_article.product_id, MIN(article.stock / product_article.article_amount)) FROM product_article
 	LEFT JOIN article ON article.article_id = product_article.article_id
-	GROUP BY product_article.product_id
-		HAVING MIN(article.stock / product_article.article_amount);`
+	GROUP BY product_article.product_id;`
 )

@@ -20,7 +20,7 @@ type Configuration struct {
 		Host                string `envconfig:"POSTGRES_HOST" default:"localhost"`
 		Port                int    `envconfig:"POSTGRES_PORT" default:"5432"`
 		DB                  string `envconfig:"POSTGRES_DATABASE" default:"warehouse"`
-		CredentialsFileName string `envconfig:"POSTGRES_CREDENTIALS_FILE"`
+		CredentialsFileName string `envconfig:"POSTGRES_CREDENTIALS_FILE" default:"creds.json"`
 	}
 }
 

@@ -6,11 +6,12 @@ It also provides two other endpoints to populate database. </br>
 
 ### Requirements:
 1. install [docker](https://docs.docker.com/desktop/install/linux-install) and [docker-compose](https://docs.docker.com/compose/install/).
+2. install [liquibase](https://www.liquibase.org/download).
 
 
 ### How to run:
-1. run ```docker-compose up warehouse```.
-2. run ```make migration```
+1. run ```make run-server```.
+2. run ```make migrate```
 
 ### How to run tests:
 1. run ```make test``` at project directory.

@@ -5,8 +5,10 @@ GIT_VERSION = $(shell git describe --always --abbrev=7 --dirty)
 SHELL = /bin/sh
 
 export COV_FOLDER?=coverage
+export APP_NAME?=warehouse
 export COVERAGE_PROFILE?=$(COV_FOLDER)/cover.out
 export COVERAGE_HTML?=$(COV_FOLDER)/index.html
+export PROJECT_DIR ?= $(PWD)
 GORACE="log_path=./report_race"
 LINT_TOOL ?= ./bin/golangci-lint
 
@@ -66,6 +68,25 @@ lint:
 
 
 #####################################
+# pack & run-server & stop-server
+#####################################
+pack:
+	docker build . -f ./build/Dockerfile -t  $(APP_NAME)
+
+run-server: pack
+	cd build && docker-compose up -d warehouse
+
+stop-server:
+	cd build && docker-compose stop warehouse
+
+#####################################
+# database migration
+#####################################
+migrate:
+	liquibase --username=postgres --password=password --url jdbc:postgresql://localhost:5432/warehouse --changeLogFile=liquibase/changelog/master.yml --logLevel=info update
+
+
+#####################################
 # Mocks
 #####################################
 
@@ -75,3 +96,19 @@ mocks-generate: ## update mocks
 
 mocks-install: ## install mockery (once)
 	go install github.com/vektra/mockery/v2@v2.10.0
+
+
+#####################################
+# Build&run&clean
+#####################################
+build: dep ## Build executales
+	go build -o $(APP_NAME) .
+
+
+
+run: build  ## Run executable
+	./$(APP_NAME)
+
+clean:  ## Clean
+	rm $(APP_NAME)
+	rm -rf  $(COV_FOLDER)
