@@ -3,6 +3,7 @@ package articles
 import (
 	"encoding/json"
 	"net/http"
+	"strconv"
 
 	"github.com/rs/zerolog/log"
 
@@ -29,7 +30,13 @@ func (h *Handler) CreateOrUpdateArticles(w http.ResponseWriter, r *http.Request)
 		responses.WriteError(ctx, w, http.StatusBadRequest, body)
 		return
 	}
-	dbReq := getCreateOrUpdateArticleDBRequest(req)
+	dbReq, err := getCreateOrUpdateArticleDBRequest(req)
+	if err != nil {
+		log.Error().AnErr("error", err).Msg("CreateOrUpdateArticles get database request from http request")
+		body := responses.GenerateErrorResponseBody(ctx, responses.InvalidBodyError, err.Error())
+		responses.WriteError(ctx, w, http.StatusBadRequest, body)
+		return
+	}
 	err = h.ArticleStore.CreateOrUpdateArticles(ctx, dbReq)
 	if err != nil {
 		log.Error().AnErr("error", err).Msg("CreateOrUpdateArticles failed to execute database query")
@@ -40,14 +47,19 @@ func (h *Handler) CreateOrUpdateArticles(w http.ResponseWriter, r *http.Request)
 	responses.WriteCreatedResponse(ctx, w, nil)
 }
 
-func getCreateOrUpdateArticleDBRequest(req *CreateOrUpdateArticlesRequest) store.CreateOrUpdateArticlesRequest {
+func getCreateOrUpdateArticleDBRequest(req *CreateOrUpdateArticlesRequest) (store.CreateOrUpdateArticlesRequest, error) {
 	res := store.CreateOrUpdateArticlesRequest{}
 	for _, article := range req.Inventory {
+		stock, err := strconv.Atoi(article.Stock)
+		if err != nil {
+			log.Error().AnErr("error", err).Msg("failed to parse inventory stock to integer")
+			return store.CreateOrUpdateArticlesRequest{}, err
+		}
 		res.Articles = append(res.Articles, store.Article{
 			ArticleID:   article.ArticleID,
 			ArticleName: article.Name,
-			Stock:       article.Stock,
+			Stock:       stock,
 		})
 	}
-	return res
+	return res, nil
 }

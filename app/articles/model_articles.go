@@ -7,5 +7,5 @@ type CreateOrUpdateArticlesRequest struct {
 type Article struct {
 	ArticleID string `json:"art_id"` // nolint
 	Name      string `json:"name"`
-	Stock     int    `json:"stock"`
+	Stock     string `json:"stock"`
 }

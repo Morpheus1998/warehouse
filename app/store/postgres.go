@@ -84,25 +84,6 @@ func (pg *PostgresDB) RemoveProductAndUpdateArticles(
 	return nil
 }
 
-func (pg *PostgresDB) getArticlesByProductID(ctx context.Context, productID string) ([]Article, error) {
-	rows, err := pg.Database.Query(getArticlesByProductID, productID)
-	if err != nil {
-		log.Ctx(ctx).Error().AnErr("error", err).Msg("failed to get articles by product_id")
-		return nil, err
-	}
-	articles := make([]Article, 0)
-	for rows.Next() {
-		var article Article
-		err = rows.Scan(&article.ArticleID, &article.Stock)
-		if err != nil {
-			log.Ctx(ctx).Error().AnErr("error", err).Msg("failed to scan article by product_id")
-			return nil, err
-		}
-		articles = append(articles, article)
-	}
-	return articles, nil
-}
-
 func (pg *PostgresDB) getProductArticlesByProductID(ctx context.Context, productID string) ([]ProductArticle, error) {
 	rows, err := pg.Database.Query(getProductArticlesByProductID, productID)
 	if err != nil {
@@ -136,7 +117,9 @@ func (pg *PostgresDB) GetAllProducts(ctx context.Context) (GetAllProductsRespons
 			log.Ctx(ctx).Error().AnErr("error", err).Msg("failed to scan all products")
 			return GetAllProductsResponse{}, err
 		}
+		products = append(products, product)
 	}
+	log.Info().Msgf("####################### products: %v", products)
 	return GetAllProductsResponse{
 		Products: products,
 	}, nil

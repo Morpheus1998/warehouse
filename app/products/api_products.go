@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"net/http"
+	"strconv"
 
 	"github.com/rs/zerolog/log"
 
@@ -30,7 +31,13 @@ func (h *Handler) CreateOrUpdateProducts(w http.ResponseWriter, r *http.Request)
 		responses.WriteError(ctx, w, http.StatusBadRequest, body)
 		return
 	}
-	dbReq := getCreateOrUpdateProductsDBRequest(req)
+	dbReq, err := getCreateOrUpdateProductsDBRequest(req)
+	if err != nil {
+		log.Error().AnErr("error", err).Msg("CreateOrUpdateProducts get database request from http request")
+		body := responses.GenerateErrorResponseBody(ctx, responses.InvalidBodyError, err.Error())
+		responses.WriteError(ctx, w, http.StatusBadRequest, body)
+		return
+	}
 	err = h.ProductsStore.CreateOrUpdateProducts(ctx, dbReq)
 	if err != nil {
 		if errors.Is(err, store.ErrArticleNotFound) {
@@ -104,7 +111,7 @@ func getProductsResponseFromDBResult(dbResult store.GetAllProductsResponse) *Get
 		productArticles := make([]Article, 0)
 		for _, productArticle := range product.Articles {
 			productArticles = append(productArticles, Article{
-				Amount:    productArticle.ArticleAmount,
+				Amount:    strconv.Itoa(productArticle.ArticleAmount),
 				ArticleID: productArticle.ArticleID,
 			})
 		}
@@ -120,16 +127,21 @@ func getProductsResponseFromDBResult(dbResult store.GetAllProductsResponse) *Get
 	return response
 }
 
-func getCreateOrUpdateProductsDBRequest(req *CreateOrUpdateProductsRequest) store.CreateOrUpdateProductsRequest {
+func getCreateOrUpdateProductsDBRequest(req *CreateOrUpdateProductsRequest) (store.CreateOrUpdateProductsRequest, error) {
 	res := store.CreateOrUpdateProductsRequest{
 		Products: []store.Product{},
 	}
 	for _, product := range req.Products {
 		productArticles := make([]store.ProductArticle, 0)
 		for _, productArticle := range product.Articles {
+			articleAmount, err := strconv.Atoi(productArticle.Amount)
+			if err != nil {
+				log.Error().AnErr("error", err).Msg("failed to parse product article amount to integer")
+				return store.CreateOrUpdateProductsRequest{}, err
+			}
 			productArticles = append(productArticles, store.ProductArticle{
 				ArticleID:     productArticle.ArticleID,
-				ArticleAmount: productArticle.Amount,
+				ArticleAmount: articleAmount,
 			})
 		}
 		storeProduct := store.Product{
@@ -138,5 +150,5 @@ func getCreateOrUpdateProductsDBRequest(req *CreateOrUpdateProductsRequest) stor
 		}
 		res.Products = append(res.Products, storeProduct)
 	}
-	return res
+	return res, nil
 }

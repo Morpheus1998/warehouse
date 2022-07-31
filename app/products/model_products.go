@@ -11,7 +11,7 @@ type Product struct {
 
 type Article struct {
 	ArticleID string `json:"art_id"`    // nolint
-	Amount    int    `json:"amount_of"` // nolint
+	Amount    string `json:"amount_of"` // nolint
 }
 
 type SellProductRequest struct {
